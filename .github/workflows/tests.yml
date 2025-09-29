@@ -1,0 +1,71 @@
+run-name: "Tests for project 12 and 13: ${{ github.event.head_commit.message }}"
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  read_sprint_file:
+    if: ${{ github.repository != 'tripleten-com/se_project_express' }}
+    runs-on: ubuntu-latest
+    outputs:
+      sprint: ${{ steps.sprint.outputs.SPRINT_NUMBER }}
+    steps:
+      - name: Print the repository
+        run: echo "Repository ${{github.repository}}"
+      - name: Set up GitHub Actions
+        uses: actions/checkout@v4
+      - name: Check if sprint file exist
+        run: bash .github/bin/check-sprint.sh
+      - name: Get sprint number
+        id: sprint
+        run: echo "SPRINT_NUMBER=$(cat sprint.txt)" >> $GITHUB_OUTPUT
+
+  test_endpoints:
+    if: ${{ github.repository != 'tripleten-com/se_project_express' }}
+    runs-on: ubuntu-latest
+    needs: read_sprint_file
+    steps:
+      - name: Set up GitHub Actions
+        uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Get testing lib 12
+        id: testing-lib-12
+        if: ${{ needs.read_sprint_file.outputs.sprint == '12' }}
+        run: set -eu && git clone --depth 1 https://github.com/tripleten-com/tests-12-public.git && mv tests-12-public tests
+
+      - name: Get testing lib 13
+        id: testing-lib-13
+        if: ${{ needs.read_sprint_file.outputs.sprint == '13' }}
+        run: set -eu && git clone --depth 1 https://github.com/tripleten-com/tests-13-public.git && mv tests-13-public tests
+
+      - name: Installing Dependencies
+        run: npm ci --loglevel=error --no-fund --no-audit
+
+      - name: Listing files
+        run: ls -la && ls -la tests
+
+      - name: Run test config
+        run: cd tests && bash ./bin/test-config.sh
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
+        with:
+          mongodb-version: "4.4"
+
+      - name: Run prepare-test-endpoints
+        if: ${{ needs.read_sprint_file.outputs.sprint == '12' }}
+        run: cd tests && bash ./bin/prepare-test-endpoints.sh
+
+      - name: Installing wait-port
+        run: npm install -g wait-port
+
+      - name: Run server
+        run: npm run start & wait-port -t 30000 localhost:3001
+
+      - name: Run test endpoints
+        run: cd tests && bash ./bin/test-endpoints.sh
