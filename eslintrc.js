@@ -19,5 +19,8 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  rules: {_id: "error"},
+  rules: {
+    "no-console": ["warn", { allow: [ "error"] }],
+    "_id/id": "off",
+  },
 };

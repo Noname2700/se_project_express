@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "lint": "npx eslint .",
-    "dev": "git --open"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/Noname2700/se_project_express#readme",
   "dependencies": {
     "express": "^4.21.2",
+    "mongoose": "^8.18.3",
     "nodemon": "^3.1.10"
   },
   "devDependencies": {
