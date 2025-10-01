@@ -1,0 +1,19 @@
+// Success Responses
+const CREATED_STATUS = 201;
+const NO_CONTENT_STATUS = 204;
+
+
+//Client Errors
+const BAD_REQUEST_STATUS = 400;
+const NOT_FOUND_STATUS = 404;
+
+//Server Errors
+const INTERNAL_SERVER_ERROR_STATUS = 500;
+
+module.exports = {
+  BAD_REQUEST_STATUS,
+  NOT_FOUND_STATUS,
+  INTERNAL_SERVER_ERROR_STATUS,
+  NO_CONTENT_STATUS,
+  CREATED_STATUS,
+};

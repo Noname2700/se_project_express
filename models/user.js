@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-import isURL from "validator/es/lib/isURL.js";
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,7 +11,10 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     required: [true, "The Avatar field is required"],
-    validate: { validator: (value) => isURL(value), message: "Invalid URL" },
+    validate: {
+      validator: (value) => validator.isURL(value),
+      message: "Invalid URL",
+    },
   },
 });
 

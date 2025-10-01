@@ -8,24 +8,17 @@ const { port = 3001 } = process.env;
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("✅ Connected to MongoDB");
   })
-  .catch(() => {
-    console.log(console.error);
+  .catch((error) => {
+    console.error("❌ MongoDB connection error:", error);
   });
 
 app.use(express.json());
 app.use("/users", mainRouter);
 
 app.get("/", (req, res) => {
-  res.send(users);
-});
-
-app.post("/", (req, res) => {
-  const { name, avatar } = req.body;
-  const newUser = { id: users.length + 1, name, avatar };
-  users.push(newUser);
-  res.status(201).send(newUser);
+  res.json({ message: "WTWR API is running!" });
 });
 
 app.listen(port, () => {
