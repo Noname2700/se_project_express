@@ -1,21 +1,23 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const mainRouter = require("./routes/index");
+const userRouter = require("./routes/users");
+const clothingItemRouter = require("./routes/clothingItems");
 
 const app = express();
 const { port = 3001 } = process.env;
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db")
+  .connect("mongodb://localhost:27017/wtwr_db")
   .then(() => {
-    console.log("✅ Connected to MongoDB");
+    console.log("Connected to MongoDB");
   })
   .catch((error) => {
-    console.error("❌ MongoDB connection error:", error);
+    console.error("MongoDB connection error:", error);
   });
 
 app.use(express.json());
-app.use("/users", mainRouter);
+app.use("/users", userRouter);
+app.use("/items", clothingItemRouter);
 
 app.get("/", (req, res) => {
   res.json({ message: "WTWR API is running!" });

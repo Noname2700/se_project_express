@@ -1,7 +1,8 @@
+const User = require("../models/user");
 const {BAD_REQUEST_STATUS, NOT_FOUND_STATUS, INTERNAL_SERVER_ERROR_STATUS} = require("../utils/errors");
 
 const getUsers = (req, res) => {
-  Users.find({})
+  User.find({})
     .then((users) => res.send(users))
     .catch((err) => res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message }));
 };
@@ -27,9 +28,10 @@ const getUser = (req, res) => {
       if (err.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "User not found" });
       } else if (err.name === "CastError") {
-        res.status(BAD_REQUEST_STATUS).send({ message: err.message });
+        res.status(BAD_REQUEST_STATUS).send({ message: "Invalid user ID" });
+      } else {
+        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message });
       }
-      return res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message });
     });
 };
 
