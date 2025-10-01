@@ -1,9 +1,13 @@
+const mongoose = require("mongoose");
+import isURL from "validator/es/lib/isURL.js";
+
+
 const clothingItemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    min: 2,
-    max: 30,
+    minlength: 2,
+    maxlength: 30,
   },
   weather: {
     type: String,
@@ -14,7 +18,7 @@ const clothingItemSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (value) => validator.isURL(value),
+      validator: (value) => isURL(value),
       message: "Invalid URL",
     },
     owner: {
@@ -33,3 +37,6 @@ const clothingItemSchema = new mongoose.Schema({
     },
   },
 });
+
+
+module.exports = mongoose.model("clothingItem", clothingItemSchema);
