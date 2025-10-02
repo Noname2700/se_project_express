@@ -3,11 +3,11 @@ const CREATED_STATUS = 201;
 const NO_CONTENT_STATUS = 204;
 
 
-//Client Errors
+// Client Errors
 const BAD_REQUEST_STATUS = 400;
 const NOT_FOUND_STATUS = 404;
 
-//Server Errors
+// Server Errors
 const INTERNAL_SERVER_ERROR_STATUS = 500;
 
 module.exports = {

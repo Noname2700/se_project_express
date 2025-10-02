@@ -46,7 +46,7 @@ const updateClothingItem = (req, res) => {
       if (!item) {
         return res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
       }
-      res.send(item);
+      return res.send(item);
     })
     .catch((err) =>
       res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message })
