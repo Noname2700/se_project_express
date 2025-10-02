@@ -1,8 +1,8 @@
 const ClothingItem = require("../models/clothingItem");
 const {
+  OK_STATUS,
   INTERNAL_SERVER_ERROR_STATUS,
   CREATED_STATUS,
-  NO_CONTENT_STATUS,
   NOT_FOUND_STATUS,
   BAD_REQUEST_STATUS,
 } = require("../utils/errors");
@@ -18,7 +18,9 @@ const getClothingItems = (req, res) => {
 const deleteClothingItem = (req, res) => {
   ClothingItem.findByIdAndDelete(req.params.itemId)
     .orFail()
-    .then(() => res.status(NO_CONTENT_STATUS).send())
+    .then((item) =>
+      res.status(OK_STATUS).send({ message: "Item deleted successfully", item })
+    )
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
@@ -32,7 +34,7 @@ const deleteClothingItem = (req, res) => {
 
 const createClothingItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
-  const owner = req.user._id; 
+  const owner = req.user._id;
 
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(CREATED_STATUS).send(item))
