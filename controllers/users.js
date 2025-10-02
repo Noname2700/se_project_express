@@ -3,6 +3,7 @@ const {
   BAD_REQUEST_STATUS,
   NOT_FOUND_STATUS,
   INTERNAL_SERVER_ERROR_STATUS,
+  CREATED_STATUS,
 } = require("../utils/errors");
 
 const getUsers = (req, res) => {
@@ -16,7 +17,7 @@ const getUsers = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar } = req.body;
   User.create({ name, avatar })
-    .then((user) => res.send(user))
+    .then((user) => res.status(CREATED_STATUS).send(user))
     .catch((err) => {
       if (err.name === "ValidationError") {
         res.status(BAD_REQUEST_STATUS).send({ message: err.message });

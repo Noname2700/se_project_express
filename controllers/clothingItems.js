@@ -4,6 +4,7 @@ const {
   CREATED_STATUS,
   NO_CONTENT_STATUS,
   NOT_FOUND_STATUS,
+  BAD_REQUEST_STATUS,
 } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
@@ -18,9 +19,15 @@ const deleteClothingItem = (req, res) => {
   ClothingItem.findByIdAndDelete(req.params.itemId)
     .orFail()
     .then(() => res.status(NO_CONTENT_STATUS).send())
-    .catch((err) =>
-      res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message })
-    );
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
+        res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
+      } else if (err.name === "CastError") {
+        res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
+      } else {
+        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message });
+      }
+    });
 };
 
 const createClothingItem = (req, res) => {
@@ -29,9 +36,13 @@ const createClothingItem = (req, res) => {
 
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(CREATED_STATUS).send(item))
-    .catch((err) =>
-      res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message })
-    );
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        res.status(BAD_REQUEST_STATUS).send({ message: err.message });
+      } else {
+        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message });
+      }
+    });
 };
 
 const updateClothingItem = (req, res) => {
@@ -44,15 +55,18 @@ const updateClothingItem = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => {
-      if (!item) {
-        return res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
+    .then((item) => res.send(item))
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
+        res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
+      } else if (err.name === "CastError") {
+        res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
+      } else if (err.name === "ValidationError") {
+        res.status(BAD_REQUEST_STATUS).send({ message: err.message });
+      } else {
+        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message });
       }
-      return res.send(item);
-    })
-    .catch((err) =>
-      res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message })
-    );
+    });
 };
 
 module.exports = {
