@@ -20,7 +20,7 @@ module.exports = {
     sourceType: "commonjs",
   },
   rules: {
-    "no-console": ["warn", { allow: [ "error"] }],
-    "_id/id": "off",
+    "no-console": "off", // Allow console.log in Node.js development
+    "no-underscore-dangle": "off", // Allow _id from MongoDB
   },
 };
