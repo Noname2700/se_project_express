@@ -16,6 +16,13 @@ mongoose
   });
 
 app.use(express.json());
+app.use((req, res, next) => {
+  req.user = {
+    _id: "507f1f77bcf86cd799439011", // Temporary user ID
+  };
+  next();
+});
+
 app.use("/users", userRouter);
 app.use("/items", clothingItemRouter);
 
