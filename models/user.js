@@ -4,15 +4,19 @@ const validator = require("validator");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: [true, "Name is required"],
+    minlength: [2, "Name must be at least 2 characters long"],
+    maxlength: [30, "Name must not exceed 30 characters"],
   },
   avatar: {
     type: String,
-    required: [true, "The Avatar field is required"],
+    required: [true, "Avatar is required"],
     validate: {
-      validator: (value) => validator.isURL(value, { protocols: ['http', 'https'] }),
+      validator: (value) =>
+        validator.isURL(value, {
+          protocols: ["http", "https"],
+          require_protocol: true,
+        }),
       message: "Invalid URL format",
     },
   },

@@ -4,23 +4,27 @@ const validator = require("validator");
 const clothingItemSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: [true, "Name is required"],
+    minlength: [2, "Name must be at least 2 characters long"],
+    maxlength: [30, "Name must not exceed 30 characters"],
   },
   weather: {
     type: String,
     required: [true, "The weather field is required"],
     enum: {
       values: ["hot", "warm", "cold"],
-      message: "Weather must be one of: hot, warm, cold"
+      message: "Weather must be one of: hot, warm, cold",
     },
   },
   imageUrl: {
     type: String,
-    required: [true, "The imageUrl field is required"],
+    required: [true, "Image URL is required"],
     validate: {
-      validator: (value) => validator.isURL(value, { protocols: ['http', 'https'] }),
+      validator: (value) =>
+        validator.isURL(value, {
+          protocols: ["http", "https"],
+          require_protocol: true,
+        }),
       message: "Invalid URL format",
     },
   },
