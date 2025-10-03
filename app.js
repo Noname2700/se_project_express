@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const userRouter = require("./routes/users");
-const clothingItemRouter = require("./routes/clothingItems");
+const routes = require("./routes");
 
 const app = express();
 const { port = 3001 } = process.env;
@@ -16,6 +15,7 @@ mongoose
   });
 
 app.use(express.json());
+
 app.use((req, res, next) => {
   req.user = {
     _id: "507f1f77bcf86cd799439011", // Temporary user ID
@@ -23,12 +23,18 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/users", userRouter);
-app.use("/items", clothingItemRouter);
-
 app.get("/", (req, res) => {
   res.json({ message: "WTWR API is running!" });
 });
+
+app.use("/", routes);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  const { statusCode = 500, message = "An error occurred on the server" } = err;
+  res.status(statusCode).json({ message });
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
