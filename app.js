@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "507f1f77bcf86cd799439011", // Temporary user ID
+    _id: "507f1f77bcf86cd799439011",
   };
   next();
 });
@@ -29,12 +29,11 @@ app.get("/", (req, res) => {
 
 app.use("/", routes);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   const { statusCode = 500, message = "An error occurred on the server" } = err;
   res.status(statusCode).json({ message });
 });
-
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

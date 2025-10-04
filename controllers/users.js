@@ -20,8 +20,8 @@ const createUser = (req, res) => {
   const { name, avatar } = req.body;
   User.create({ name, avatar })
     .then((user) => res.status(CREATED_STATUS).send(user))
-    .catch(() => {
-      if (err.name === "ValidationError") {
+    .catch((error) => {
+      if (error.name === "ValidationError") {
         res
           .status(BAD_REQUEST_STATUS)
           .send({ message: "Invalid data provided for creating user" });
@@ -38,10 +38,10 @@ const getUser = (req, res) => {
   User.findById(userId)
     .orFail()
     .then((user) => res.send(user))
-    .catch(() => {
-      if (err.name === "DocumentNotFoundError") {
+    .catch((error) => {
+      if (error.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "User not found" });
-      } else if (err.name === "CastError") {
+      } else if (error.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid user ID" });
       } else {
         res
