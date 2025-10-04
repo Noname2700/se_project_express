@@ -21,7 +21,9 @@ const deleteClothingItem = (req, res) => {
   ClothingItem.findByIdAndDelete(req.params.itemId)
     .orFail()
     .then((item) =>
-      res.status(OK_STATUS).send({ message: "Item deleted successfully", item })
+      res
+        .status(OK_STATUS)
+        .send({ message: "Item deleted successfully", item })
     )
     .catch((error) => {
       if (error.name === "DocumentNotFoundError") {
