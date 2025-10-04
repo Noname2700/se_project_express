@@ -11,7 +11,9 @@ const getClothingItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.send(items))
     .catch((err) =>
-      res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: "An error occurred on the server" })
+      res
+        .status(INTERNAL_SERVER_ERROR_STATUS)
+        .send({ message: "An error occurred on the server" })
     );
 };
 
@@ -27,7 +29,9 @@ const deleteClothingItem = (req, res) => {
       } else if (err.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
       } else {
-        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: "An error occurred on the server" });
+        res
+          .status(INTERNAL_SERVER_ERROR_STATUS)
+          .send({ message: "An error occurred on the server" });
       }
     });
 };
@@ -40,16 +44,61 @@ const createClothingItem = (req, res) => {
     .then((item) => res.status(CREATED_STATUS).send(item))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(BAD_REQUEST_STATUS).send({ message: "Invalid data provided for creating item" });
+        res
+          .status(BAD_REQUEST_STATUS)
+          .send({ message: "Invalid data provided for creating item" });
+      } else {
+        res
+          .status(INTERNAL_SERVER_ERROR_STATUS)
+          .send({ message: "An error occurred on the server" });
+      }
+    });
+};
+
+
+
+const likeItem = (req, res) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true }
+  )
+    .orFail()
+    .then((item) => res.status(OK_STATUS).send(item))
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
+        res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
+      } else if (err.name === "CastError") {
+        res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
       } else {
         res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: "An error occurred on the server" });
       }
     });
 };
 
+const unlikeItem = (req, res) => {
+  ClothingItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $pull: { likes: req.user._id } },
+    { new: true }
+  )
+    .orFail()
+    .then((item) => res.status(OK_STATUS).send(item))
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
+        res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
+      } else if (err.name === "CastError") {
+        res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
+      } else {
+        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: "An error occurred on the server" });
+      }
+    });
+};
 
 module.exports = {
   deleteClothingItem,
+  likeItem,
+  unlikeItem,
   createClothingItem,
-  getClothingItems
+  getClothingItems,
 };

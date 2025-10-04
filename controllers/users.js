@@ -10,7 +10,9 @@ const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send(users))
     .catch((err) =>
-      res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message })
+      res
+        .status(INTERNAL_SERVER_ERROR_STATUS)
+        .send({ message: "An error occurred on the server" })
     );
 };
 
@@ -20,12 +22,17 @@ const createUser = (req, res) => {
     .then((user) => res.status(CREATED_STATUS).send(user))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(BAD_REQUEST_STATUS).send({ message: err.message });
+        res
+          .status(BAD_REQUEST_STATUS)
+          .send({ message: "Invalid data provided for creating user" });
       } else {
-        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message });
+        res
+          .status(INTERNAL_SERVER_ERROR_STATUS)
+          .send({ message: "An error occurred on the server" });
       }
     });
 };
+
 const getUser = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
@@ -37,7 +44,9 @@ const getUser = (req, res) => {
       } else if (err.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid user ID" });
       } else {
-        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: err.message });
+        res
+          .status(INTERNAL_SERVER_ERROR_STATUS)
+          .send({ message: "An error occurred on the server" });
       }
     });
 };

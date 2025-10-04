@@ -9,4 +9,5 @@ router.get("/", getUsers);
 router.post("/", createUser);
 router.get("/:userId", getUser);
 
+
 module.exports = router;
