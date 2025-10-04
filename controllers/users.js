@@ -9,7 +9,7 @@ const {
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send(users))
-    .catch((err) =>
+    .catch(() =>
       res
         .status(INTERNAL_SERVER_ERROR_STATUS)
         .send({ message: "An error has occurred on the server" })
@@ -20,7 +20,7 @@ const createUser = (req, res) => {
   const { name, avatar } = req.body;
   User.create({ name, avatar })
     .then((user) => res.status(CREATED_STATUS).send(user))
-    .catch((err) => {
+    .catch(() => {
       if (err.name === "ValidationError") {
         res
           .status(BAD_REQUEST_STATUS)
@@ -38,7 +38,7 @@ const getUser = (req, res) => {
   User.findById(userId)
     .orFail()
     .then((user) => res.send(user))
-    .catch((err) => {
+    .catch(() => {
       if (err.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "User not found" });
       } else if (err.name === "CastError") {

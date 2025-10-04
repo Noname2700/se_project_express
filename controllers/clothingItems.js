@@ -10,7 +10,7 @@ const {
 const getClothingItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.send(items))
-    .catch((err) =>
+    .catch(() =>
       res
         .status(INTERNAL_SERVER_ERROR_STATUS)
         .send({ message: "An error has occurred on the server" })
@@ -23,10 +23,10 @@ const deleteClothingItem = (req, res) => {
     .then((item) =>
       res.status(OK_STATUS).send({ message: "Item deleted successfully", item })
     )
-    .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
+    .catch((error) => {
+      if (error.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      } else if (error.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
       } else {
         res
@@ -42,8 +42,8 @@ const createClothingItem = (req, res) => {
 
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(CREATED_STATUS).send(item))
-    .catch((err) => {
-      if (err.name === "ValidationError") {
+    .catch((error) => {
+      if (error.name === "ValidationError") {
         res
           .status(BAD_REQUEST_STATUS)
           .send({ message: "Invalid data provided for creating item" });
@@ -63,10 +63,10 @@ const likeItem = (req, res) => {
   )
     .orFail()
     .then((item) => res.status(OK_STATUS).send(item))
-    .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
+    .catch((error) => {
+      if (error.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      } else if (error.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
       } else {
         res
@@ -84,10 +84,10 @@ const unlikeItem = (req, res) => {
   )
     .orFail()
     .then((item) => res.status(OK_STATUS).send(item))
-    .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
+    .catch((error) => {
+      if (error.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      } else if (error.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
       } else {
         res
