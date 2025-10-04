@@ -13,7 +13,7 @@ const getClothingItems = (req, res) => {
     .catch((err) =>
       res
         .status(INTERNAL_SERVER_ERROR_STATUS)
-        .send({ message: "An error occurred on the server" })
+        .send({ message: "An error has occurred on the server" })
     );
 };
 
@@ -31,7 +31,7 @@ const deleteClothingItem = (req, res) => {
       } else {
         res
           .status(INTERNAL_SERVER_ERROR_STATUS)
-          .send({ message: "An error occurred on the server" });
+          .send({ message: "An error has occurred on the server" });
       }
     });
 };
@@ -50,12 +50,10 @@ const createClothingItem = (req, res) => {
       } else {
         res
           .status(INTERNAL_SERVER_ERROR_STATUS)
-          .send({ message: "An error occurred on the server" });
+          .send({ message: "An error has occurred on the server" });
       }
     });
 };
-
-
 
 const likeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
@@ -71,7 +69,9 @@ const likeItem = (req, res) => {
       } else if (err.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
       } else {
-        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: "An error occurred on the server" });
+        res
+          .status(INTERNAL_SERVER_ERROR_STATUS)
+          .send({ message: "An error has occurred on the server" });
       }
     });
 };
@@ -90,7 +90,9 @@ const unlikeItem = (req, res) => {
       } else if (err.name === "CastError") {
         res.status(BAD_REQUEST_STATUS).send({ message: "Invalid item ID" });
       } else {
-        res.status(INTERNAL_SERVER_ERROR_STATUS).send({ message: "An error occurred on the server" });
+        res
+          .status(INTERNAL_SERVER_ERROR_STATUS)
+          .send({ message: "An error has occurred on the server" });
       }
     });
 };

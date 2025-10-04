@@ -12,7 +12,7 @@ const getUsers = (req, res) => {
     .catch((err) =>
       res
         .status(INTERNAL_SERVER_ERROR_STATUS)
-        .send({ message: "An error occurred on the server" })
+        .send({ message: "An error has occurred on the server" })
     );
 };
 
@@ -28,7 +28,7 @@ const createUser = (req, res) => {
       } else {
         res
           .status(INTERNAL_SERVER_ERROR_STATUS)
-          .send({ message: "An error occurred on the server" });
+          .send({ message: "An error has occurred on the server" });
       }
     });
 };
@@ -46,7 +46,7 @@ const getUser = (req, res) => {
       } else {
         res
           .status(INTERNAL_SERVER_ERROR_STATUS)
-          .send({ message: "An error occurred on the server" });
+          .send({ message: "An error has occurred on the server" });
       }
     });
 };
