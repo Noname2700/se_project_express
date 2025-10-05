@@ -9,7 +9,7 @@ const {
 
 const getClothingItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.send(items))
+    .then((items) => res.status(OK_STATUS).send(items))
     .catch(() =>
       res
         .status(INTERNAL_SERVER_ERROR_STATUS)
@@ -39,6 +39,14 @@ const deleteClothingItem = (req, res) => {
 const createClothingItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
+
+
+  if (!name || !weather || !imageUrl) {
+    res.status(BAD_REQUEST_STATUS).send({
+      message: "Name, weather, and imageUrl are required",
+    });
+    return;
+  }
 
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(CREATED_STATUS).send(item))
