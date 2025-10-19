@@ -5,6 +5,7 @@ const {
   CREATED_STATUS,
   NOT_FOUND_STATUS,
   BAD_REQUEST_STATUS,
+  UNAUTHORIZED_STATUS,
 } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
@@ -18,13 +19,20 @@ const getClothingItems = (req, res) => {
 };
 
 const deleteClothingItem = (req, res) => {
-  ClothingItem.findByIdAndDelete(req.params.itemId)
+  ClothingItem.findById(req.params.itemId)
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id) {
-        return res.status(UNAUTHORIZED_STATUS).send({ message: "You are not authorized to delete this item" });
+        return res
+          .status(UNAUTHORIZED_STATUS)
+          .send({ message: "You are not authorized to delete this item" });
       }
-      res.status(OK_STATUS).send({ message: "Item deleted successfully", item });
+      return ClothingItem.findByIdAndDelete(req.params.itemId);
+    })
+    .then((item) => {
+      res
+        .status(OK_STATUS)
+        .send({ message: "Item deleted successfully", item });
     })
     .catch((error) => {
       if (error.name === "DocumentNotFoundError") {
@@ -43,26 +51,23 @@ const createClothingItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
 
-
   if (!name || !weather || !imageUrl) {
-    res.status(BAD_REQUEST_STATUS).send({
+    return res.status(BAD_REQUEST_STATUS).send({
       message: "Name, weather, and imageUrl are required",
     });
-    return;
   }
 
-  ClothingItem.create({ name, weather, imageUrl, owner })
+  return ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(CREATED_STATUS).send(item))
     .catch((error) => {
       if (error.name === "ValidationError") {
-        res
+        return res
           .status(BAD_REQUEST_STATUS)
           .send({ message: "Invalid data provided for creating item" });
-      } else {
-        res
-          .status(INTERNAL_SERVER_ERROR_STATUS)
-          .send({ message: "An error has occurred on the server" });
       }
+      return res
+        .status(INTERNAL_SERVER_ERROR_STATUS)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 

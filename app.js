@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const routes = require("./routes");
 const cors = require("cors");
+const routes = require("./routes");
 const { logInUser, createUser } = require("./controllers/users");
 
 const app = express();
@@ -28,7 +28,7 @@ app.post("/signup", createUser);
 
 app.use("/", routes);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   const { statusCode = 500, message = "An error occurred on the server" } = err;
   res.status(statusCode).json({ message });
