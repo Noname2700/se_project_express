@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const routes = require("./routes");
+const cors = require("cors");
+const { logInUser, createUser } = require("./controllers/users");
 
 const app = express();
 const { port = 3001 } = process.env;
@@ -14,18 +16,15 @@ mongoose
     console.error("MongoDB connection error:", error);
   });
 
+app.use(cors());
 app.use(express.json());
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: "507f1f77bcf86cd799439011",
-  };
-  next();
-});
 
 app.get("/", (req, res) => {
   res.json({ message: "WTWR API is running!" });
 });
+
+app.post("/signin", logInUser);
+app.post("/signup", createUser);
 
 app.use("/", routes);
 
@@ -33,7 +32,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   const { statusCode = 500, message = "An error occurred on the server" } = err;
   res.status(statusCode).json({ message });
-  next();
 });
 
 app.listen(port, () => {

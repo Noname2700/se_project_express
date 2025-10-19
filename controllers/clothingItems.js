@@ -20,9 +20,12 @@ const getClothingItems = (req, res) => {
 const deleteClothingItem = (req, res) => {
   ClothingItem.findByIdAndDelete(req.params.itemId)
     .orFail()
-    .then((item) =>
-      res.status(OK_STATUS).send({ message: "Item deleted successfully", item })
-    )
+    .then((item) => {
+      if (item.owner.toString() !== req.user._id) {
+        return res.status(UNAUTHORIZED_STATUS).send({ message: "You are not authorized to delete this item" });
+      }
+      res.status(OK_STATUS).send({ message: "Item deleted successfully", item });
+    })
     .catch((error) => {
       if (error.name === "DocumentNotFoundError") {
         res.status(NOT_FOUND_STATUS).send({ message: "Item not found" });
