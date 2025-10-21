@@ -12,7 +12,6 @@ const {
   UNAUTHORIZED_STATUS,
 } = require("../utils/errors");
 
-
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
@@ -38,26 +37,6 @@ const createUser = (req, res) => {
           message: "An error has occurred on the server",
         });
       }
-    });
-};
-
-const getUser = (req, res) => {
-  const { userId } = req.params;
-  User.findById(userId)
-    .orFail()
-    .then((user) => res.send(user))
-    .catch((error) => {
-      if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_STATUS).send({ message: "User not found" });
-      }
-      if (error.name === "CastError") {
-        return res
-          .status(BAD_REQUEST_STATUS)
-          .send({ message: "Invalid user ID" });
-      }
-      return res
-        .status(INTERNAL_SERVER_ERROR_STATUS)
-        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -141,7 +120,6 @@ const updateProfile = (req, res) => {
 
 module.exports = {
   createUser,
-  getUser,
   getCurrentUser,
   logInUser,
   updateProfile,

@@ -27,12 +27,11 @@ const deleteClothingItem = (req, res) => {
           .status(FORBIDDEN_STATUS)
           .send({ message: "You are not authorized to delete this item" });
       }
-      return ClothingItem.findByIdAndDelete(req.params.itemId);
-    })
-    .then((item) => {
-      res
-        .status(OK_STATUS)
-        .send({ message: "Item deleted successfully", item });
+      return ClothingItem.findByIdAndDelete(req.params.itemId).then((item) => {
+        res
+          .status(OK_STATUS)
+          .send({ message: "Item deleted successfully", item });
+      });
     })
     .catch((error) => {
       if (error.name === "DocumentNotFoundError") {

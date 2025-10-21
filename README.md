@@ -26,4 +26,4 @@ We then learned to secure our web app by implementing JWT (JSON Web Token), whic
 
 ## Project Pitch Video
 
-Check out [this video](https://drive.google.com/file/d/12pIF44sdZkHN-HdcU9jWY8z-S64njkUL/view?usp=drive_link), where I describe my project and some challenges I faced while building it.
+Check out [this video](https://drive.google.com/file/d/12pIF44sdZkHN-HdcU9jWY8z-S64njkUL/view?usp=sharing), where I describe my project and some challenges I faced while building it.
