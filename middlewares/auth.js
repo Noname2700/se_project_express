@@ -11,6 +11,7 @@ const auth = (req, res, next) => {
         .status(UNAUTHORIZED_STATUS)
         .json({ message: "Authorization required" });
     }
+
     const token = authorization.replace("Bearer ", "");
     const payload = jwt.verify(token, JWT_SECRET);
     req.user = payload;

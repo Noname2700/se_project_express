@@ -28,7 +28,7 @@ app.post("/signup", createUser);
 
 app.use("/", routes);
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   const { statusCode = 500, message = "An error occurred on the server" } = err;
   res.status(statusCode).json({ message });
