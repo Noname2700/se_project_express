@@ -5,7 +5,7 @@ const {
   CREATED_STATUS,
   NOT_FOUND_STATUS,
   BAD_REQUEST_STATUS,
-  UNAUTHORIZED_STATUS,
+  FORBIDDEN_STATUS
 } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
@@ -24,7 +24,7 @@ const deleteClothingItem = (req, res) => {
     .then((item) => {
       if (item.owner.toString() !== req.user._id) {
         return res
-          .status(UNAUTHORIZED_STATUS)
+          .status(FORBIDDEN_STATUS)
           .send({ message: "You are not authorized to delete this item" });
       }
       return ClothingItem.findByIdAndDelete(req.params.itemId);

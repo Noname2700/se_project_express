@@ -12,15 +12,6 @@ const {
   UNAUTHORIZED_STATUS,
 } = require("../utils/errors");
 
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch(() =>
-      res
-        .status(INTERNAL_SERVER_ERROR_STATUS)
-        .send({ message: "An error has occurred on the server" })
-    );
-};
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
