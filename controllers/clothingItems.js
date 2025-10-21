@@ -27,10 +27,10 @@ const deleteClothingItem = (req, res) => {
           .status(FORBIDDEN_STATUS)
           .send({ message: "You are not authorized to delete this item" });
       }
-      return ClothingItem.findByIdAndDelete(req.params.itemId).then((item) => {
+      return ClothingItem.findByIdAndDelete(req.params.itemId).then(() => {
         res
           .status(OK_STATUS)
-          .send({ message: "Item deleted successfully", item });
+          .send({ message: "Item deleted successfully" });
       });
     })
     .catch((error) => {
