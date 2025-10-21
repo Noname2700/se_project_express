@@ -26,7 +26,7 @@ We then learn to secure our web app by implementing   JWT, which is a way for th
 
  ## Project Pitch Video
  
- Check out [this video](ADD_LINK_HERE), where I describe my 
+ Check out [this video](https://drive.google.com/file/d/12pIF44sdZkHN-HdcU9jWY8z-S64njkUL/view?usp=drive_link), where I describe my 
  project and some challenges I faced while building it.
 
 
