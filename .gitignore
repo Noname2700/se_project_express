@@ -1,4 +1,6 @@
 #logs
+logs/*
+!logs/.gitkeep
 *.log
 npm-debug.log*
 

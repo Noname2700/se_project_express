@@ -1,7 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 const routes = require("./routes");
+const { errorHandler } = require("./middlewares/error-handler");
+const { errors} = require("celebrate");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
+
+// Create logs directory if it doesn't exist
+const logsDir = path.join(__dirname, "logs");
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir);
+}
 
 const app = express();
 const { port = 3001 } = process.env;
@@ -22,13 +33,13 @@ app.get("/", (req, res) => {
   res.json({ message: "WTWR API is running!" });
 });
 
+app.use(requestLogger);
 app.use("/", routes);
+app.use(errorLogger);
 
-app.use((err, req, res) => {
-  console.error(err.stack);
-  const { statusCode = 500, message = "An error occurred on the server" } = err;
-  res.status(statusCode).json({ message });
-});
+app.use(errors());
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
