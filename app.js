@@ -7,6 +7,7 @@ const routes = require("./routes");
 const { errorHandler } = require("./middlewares/error-handler");
 const { errors} = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+require("dotenv").config();
 
 // Create logs directory if it doesn't exist
 const logsDir = path.join(__dirname, "logs");
