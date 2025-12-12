@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
 const { CREATED_STATUS, OK_STATUS } = require("../utils/statusCodes");
-const { BadRequestError, ConflictError, NotFoundError, UnAuthorizedError } = require("../middlewares/error-handler");
+const { BadRequestError, ConflictError, NotFoundError, UnAuthorizedError, InternalServerError } = require("../middlewares/error-handler");
 
 const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
@@ -19,11 +19,11 @@ const createUser = (req, res, next) => {
     .catch((error) => {
       if (error.name === "ValidationError") {
         return next(new BadRequestError("Invalid data provided for creating user"));
-      } else if (error.code === 11000) {
-        return next(new ConflictError("Email already exists"));
-      } else {
-        return next(new InternalServerError("An error has occurred on the server"));
       }
+      if (error.code === 11000) {
+        return next(new ConflictError("Email already exists"));
+      }
+      return next(new InternalServerError("An error has occurred on the server"));
     });
 };
 
@@ -40,9 +40,7 @@ const logInUser = (req, res, next) => {
       });
       res.status(OK_STATUS).send({ token });
     })
-    .catch(() => {
-      return next(new UnAuthorizedError("Invalid email or password"));
-    });
+    .catch(() => next(new UnAuthorizedError("Invalid email or password")));
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -59,7 +57,7 @@ const getCurrentUser = (req, res, next) => {
     });
 };
 
-const updateProfile = (req, res) => {
+const updateProfile = (req, res, next) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
 

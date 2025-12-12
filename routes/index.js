@@ -9,8 +9,8 @@ router.use("/items", clothingItemRouter);
 router.post("/signin", logInUser);
 router.post("/signup", createUser);
 
-router.use((req, res) => {
-  throw new NotFoundError("Requested resource not found");
+router.use((req, res, next) => {
+   next(new NotFoundError("Requested resource not found"));
 });
 
 module.exports = router;

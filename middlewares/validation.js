@@ -7,6 +7,14 @@ const NAME_MAX_LENGTH = 30;
 const PASSWORD_MIN_LENGTH = 6;
 const ITEM_ID_LENGTH = 24;
 
+
+const validateURL = (value, helpers) => {
+  if (validator.isURL(value)) {
+    return value;
+  }
+  return helpers.error("string.uri");
+};
+
 const validateClothingItemCreation = celebrate({
   body: Joi.object().keys({
     name: Joi.string()
@@ -148,12 +156,7 @@ const validateItemIdParam = celebrate({
   }),
 });
 
-const validateURL = (value, helpers) => {
-  if (validator.isURL(value)) {
-    return value;
-  }
-  return helpers.error("string.uri");
-};
+
 
 const validateUserIdParam = createIdValidator("userId");
 
