@@ -21,7 +21,9 @@ const deleteClothingItem = (req, res, next) => {
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id) {
-        return next(new ForbiddenError("You do not have permission to delete this item"));
+        return next(
+          new ForbiddenError("You do not have permission to delete this item")
+        );
       }
       return ClothingItem.findByIdAndDelete(req.params.itemId).then(() => {
         res.status(OK_STATUS).send({ message: "Item deleted successfully" });
@@ -43,7 +45,9 @@ const createClothingItem = (req, res, next) => {
   const owner = req.user._id;
 
   if (!name || !weather || !imageUrl) {
-    return next(new BadRequestError("Name, weather, and imageUrl are required"));
+    return next(
+      new BadRequestError("Name, weather, and imageUrl are required")
+    );
   }
 
   return ClothingItem.create({ name, weather, imageUrl, owner })
@@ -68,11 +72,13 @@ const likeItem = (req, res, next) => {
     .catch((error) => {
       if (error.name === "DocumentNotFoundError") {
         return next(new NotFoundError("Item not found"));
-      } else if (error.name === "CastError") {
-        return next(new BadRequestError("Invalid item ID"));
-      } else {
-        return next(new InternalServerError("An error has occurred on the server"));
       }
+      if (error.name === "CastError") {
+        return next(new BadRequestError("Invalid item ID"));
+      }
+      return next(
+        new InternalServerError("An error has occurred on the server")
+      );
     });
 };
 
@@ -87,11 +93,13 @@ const unlikeItem = (req, res, next) => {
     .catch((error) => {
       if (error.name === "DocumentNotFoundError") {
         return next(new NotFoundError("Item not found"));
-      } else if (error.name === "CastError") {
-        return next(new BadRequestError("Invalid item ID"));
-      } else {
-        return next(new InternalServerError("An error has occurred on the server"));
       }
+      if (error.name === "CastError") {
+        return next(new BadRequestError("Invalid item ID"));
+      }
+      return next(
+        new InternalServerError("An error has occurred on the server")
+      );
     });
 };
 
