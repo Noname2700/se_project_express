@@ -24,6 +24,12 @@ We then learned to secure our web app by implementing JWT (JSON Web Token), whic
 - CORS
 - Bcrypt
 
+## Project Domain Name
+(https://www.domain.jumpingcrab.com/)
+
+## GitHub Repo
+(https://github.com/Noname2700/se_project_react.git)
+
 ## Project Pitch Video
 
-Check out [this video](https://drive.google.com/file/d/12pIF44sdZkHN-HdcU9jWY8z-S64njkUL/view?usp=sharing), where I describe my project and some challenges I faced while building it.
+Check out [Project 15 Pitch Video](https://drive.google.com/file/d/1lUJ2u9vIK7KrGKRhqPSMKA7O_smUZ5Fp/view?usp=sharing), where I describe my project and some challenges I faced while building a complete full-stack project with both frontend and backend.
