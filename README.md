@@ -32,4 +32,4 @@ We then learned to secure our web app by implementing JWT (JSON Web Token), whic
 
 ## Project Pitch Video
 
-Check out [Project 15 Pitch Video](https://drive.google.com/file/d/1lUJ2u9vIK7KrGKRhqPSMKA7O_smUZ5Fp/view?usp=sharing), where I describe my project and some challenges I faced while building a complete full-stack project with both frontend and backend.
+Check out [YohanEncarnacion-ProjectPitch-Sprint15](https://drive.google.com/file/d/1lUJ2u9vIK7KrGKRhqPSMKA7O_smUZ5Fp/view?usp=sharing), where I describe my project and some challenges I faced while building a complete full-stack project with both frontend and backend.
