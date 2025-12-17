@@ -1,12 +1,10 @@
 const ClothingItem = require("../models/clothingItem");
 const { OK_STATUS, CREATED_STATUS } = require("../utils/statusCodes");
 
-const {
-  BadRequestError,
-  NotFoundError,
-  ForbiddenError,
-  InternalServerError,
-} = require("../middlewares/error-handler");
+const BadRequestError = require("../middlewares/errors/badRequestError");
+const NotFoundError = require("../middlewares/errors/notFoundError");
+const ForbiddenError = require("../middlewares/errors/forbiddenError");
+const InternalServerError = require("../middlewares/errors/internalServerError");
 
 const getClothingItems = (req, res, next) => {
   ClothingItem.find({})
@@ -76,9 +74,7 @@ const likeItem = (req, res, next) => {
       if (error.name === "CastError") {
         return next(new BadRequestError("Invalid item ID"));
       }
-      return next(
-        new InternalServerError("An error has occurred on the server")
-      );
+      return next(error);
     });
 };
 

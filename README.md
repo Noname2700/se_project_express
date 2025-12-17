@@ -25,10 +25,14 @@ We then learned to secure our web app by implementing JWT (JSON Web Token), whic
 - Bcrypt
 
 ## Project Domain Name
-(https://www.domain.jumpingcrab.com/)
+
+Frontend: https://www.domain.jumpingcrab.com/
+Backend: https://api.domain.jumpingcrab.com/
 
 ## GitHub Repo
-(https://github.com/Noname2700/se_project_react.git)
+
+Frontend: https://github.com/Noname2700/se_project_react.git
+Backend: https://github.com/Noname2700/se_project_express.git
 
 ## Project Pitch Video
 

@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { errors } = require("celebrate");
 const routes = require("./routes");
-const { errorHandler } = require("./middlewares/error-handler");
+const errorHandler = require("./middlewares/error-handler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 require("dotenv").config();
 
